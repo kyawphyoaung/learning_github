@@ -25,6 +25,7 @@ jobs:
         run: |
           Rscript -e 'install.packages("remotes", repos = "https://cloud.r-project.org")'
           Rscript -e 'remotes::install_deps(dependencies = TRUE)'
+          Rscript -e 'install.packages("devtools", repos = "https://cloud.r-project.org")'
 
       - name: Runs tests
         run: Rscript -e 'devtools::test()'
