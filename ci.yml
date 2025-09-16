@@ -23,14 +23,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          install.packages("remotes", repos = "https://cloud.r-project.org")
-          remotes::install_deps(dependencies = TRUE)
+          Rscript -e 'install.packages("remotes", repos = "https://cloud.r-project.org")'
+          Rscript -e 'remotes::install_deps(dependencies = TRUE)'
 
       - name: Runs tests
-        run: |
-          devtools::test()
+        run: Rscript -e 'devtools::test()'
 
       - name: R CMD check
         run: |
-          golem::document_and_reload()
-          devtools::check()
+          Rscript -e 'golem::document_and_reload()'
+          Rscript -e 'devtools::check()'
