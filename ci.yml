@@ -1,0 +1,36 @@
+# .github/workflows/ci.yml
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+name: CI Pipeline
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.2'
+          use-public-rspm: true # This helps with faster and more reliable package installation
+
+      - name: Install dependencies
+        run: |
+          install.packages("remotes", repos = "https://cloud.r-project.org")
+          remotes::install_deps(dependencies = TRUE)
+
+      - name: Runs tests
+        run: |
+          devtools::test()
+
+      - name: R CMD check
+        run: |
+          golem::document_and_reload()
+          devtools::check()
